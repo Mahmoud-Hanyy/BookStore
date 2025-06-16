@@ -25,3 +25,12 @@ def book_create(request):
         'form_title': 'Add New Book'
       }
   return render(request, 'books/book_form.html', context)    
+
+
+
+def book_detail(request, pk):
+    book = get_object_or_404(Book, pk=pk)
+    context = {
+        'book': book
+    }
+    return render(request, 'books/book_detail.html', context)

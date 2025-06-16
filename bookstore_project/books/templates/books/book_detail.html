@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ book.title }} - Book Details</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
+            color: #333;
+        }
+    </style>
+</head>
+<body class="p-6">
+    <div class="max-w-xl mx-auto bg-white p-8 rounded-lg shadow-lg border border-indigo-200">
+        <h1 class="text-3xl font-bold text-indigo-700 mb-4 text-center">Book Details</h1>
+        <div class="space-y-4">
+            <p class="text-xl text-gray-800"><strong>Title:</strong> {{ book.title }}</p>
+            <p class="text-xl text-gray-800"><strong>Author:</strong> {{ book.author }}</p>
+            <p class="text-xl text-gray-800"><strong>Price:</strong> ${{ book.price }}</p>
+        </div>
+
+        <div class="flex justify-between items-center mt-8">
+            <!-- Later we'll add links for edit and delete -->
+            <a href="{% url 'book_list' %}" class="text-indigo-600 hover:text-indigo-800 text-sm font-medium">Back to Book List</a>
+            <!-- Placeholders for Edit/Delete buttons -->
+            <a href="#" class="inline-block bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300 shadow-md opacity-50 cursor-not-allowed">Edit Book (Coming Soon)</a>
+        </div>
+    </div>
+</body>
+</html>
