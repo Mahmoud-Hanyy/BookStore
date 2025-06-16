@@ -34,3 +34,21 @@ def book_detail(request, pk):
         'book': book
     }
     return render(request, 'books/book_detail.html', context)
+
+
+def book_update(request, pk):
+    book = get_object_or_404(Book, pk=pk)
+    if request.method == 'POST':
+        form = BookForm(request.POST, instance=book)
+        if form.is_valid():
+            form.save()
+            return redirect('book_detail', pk=book.pk)
+    else:
+        form = BookForm(instance=book)
+
+    context = {
+        'form': form,
+        'form_title': f'Edit Book: {book.title}'
+    }
+    return render(request, 'books/book_form.html', context)
+

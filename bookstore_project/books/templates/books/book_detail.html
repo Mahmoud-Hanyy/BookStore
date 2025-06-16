@@ -23,10 +23,11 @@
         </div>
 
         <div class="flex justify-between items-center mt-8">
-            <!-- Later we'll add links for edit and delete -->
             <a href="{% url 'book_list' %}" class="text-indigo-600 hover:text-indigo-800 text-sm font-medium">Back to Book List</a>
-            <!-- Placeholders for Edit/Delete buttons -->
-            <a href="#" class="inline-block bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300 shadow-md opacity-50 cursor-not-allowed">Edit Book (Coming Soon)</a>
+            <!-- Edit button for this specific book -->
+            <a href="{% url 'book_update' pk=book.pk %}" class="inline-block bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300 shadow-md">Edit Book</a>
+            <!-- Placeholder for Delete button - will implement next -->
+            <a href="#" class="inline-block bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300 shadow-md opacity-50 cursor-not-allowed">Delete Book (Coming Soon)</a>
         </div>
     </div>
 </body>
