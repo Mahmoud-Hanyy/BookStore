@@ -1,3 +1,4 @@
+{% load static %} {# Must be at the top! #}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ book.title }} - Book Details</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}"> {# Link to your custom CSS #}
     <style>
         body {
             font-family: 'Inter', sans-serif;
@@ -20,6 +22,15 @@
             <p class="text-xl text-gray-800"><strong>Title:</strong> {{ book.title }}</p>
             <p class="text-xl text-gray-800"><strong>Author:</strong> {{ book.author }}</p>
             <p class="text-xl text-gray-800"><strong>Price:</strong> ${{ book.price }}</p>
+            {% if book.description %}
+                <p class="text-lg text-gray-700 leading-relaxed">
+                    <strong>Description:</strong><br>{{ book.description|linebreaksbr }}
+                </p>
+            {% else %}
+                <p class="text-lg text-gray-500"><strong>Description:</strong> N/A</p>
+            {% endif %}
+            <p class="text-lg text-gray-700"><strong>Rating:</strong> {{ book.rate }}/5</p>
+            <p class="text-lg text-gray-700"><strong>Views:</strong> {{ book.views }}</p>
         </div>
 
         <div class="flex justify-between items-center mt-8">
