@@ -1,4 +1,4 @@
-{% load static %} {# Must be at the top! #}
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ book.title }} - Book Details</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="{% static 'css/style.css' %}"> {# Link to your custom CSS #}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <style>
         body {
             font-family: 'Inter', sans-serif;
@@ -31,6 +31,27 @@
             {% endif %}
             <p class="text-lg text-gray-700"><strong>Rating:</strong> {{ book.rate }}/5</p>
             <p class="text-lg text-gray-700"><strong>Views:</strong> {{ book.views }}</p>
+            {% comment %} Display User who created the book {% endcomment %}
+            {% if book.user %}
+                <p class="text-lg text-gray-700"><strong>Created by:</strong> {{ book.user.username }}</p>
+            {% endif %}
+            {% comment %} Display Categories {% endcomment %}
+            {% if book.categories.all %}
+                <p class="text-lg text-gray-700">
+                    <strong>Categories:</strong>
+                    {% for category in book.categories.all %}
+                        <span class="inline-block bg-indigo-200 text-indigo-800 text-sm px-2 py-1 rounded-full mr-1">{{ category.name }}</span>
+                    {% endfor %}
+                </p>
+            {% endif %}
+            {% comment %} Display ISBN Number {% endcomment %}
+            {% if book.isbn_details %} {# Check if isbn_details object exists #}
+                <p class="text-lg text-gray-700"><strong>ISBN:</strong> {{ book.isbn_details.isbn_number }}</p>
+                <p class="text-md text-gray-600 ml-4">Author Title: {{ book.isbn_details.author_title }}</p>
+                <p class="text-md text-gray-600 ml-4">Book Title (ISBN): {{ book.isbn_details.book_title }}</p>
+            {% else %}
+                <p class="text-lg text-gray-500"><strong>ISBN:</strong> N/A</p>
+            {% endif %}
         </div>
 
         <div class="flex justify-between items-center mt-8">
