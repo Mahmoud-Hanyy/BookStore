@@ -1,142 +1,60 @@
+{% extends 'base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bookstore - All Books</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-    <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #f3f4f6;
-            color: #333;
-        }
-    </style>
-</head>
-<body class="p-6">
-    <div class="max-w-4xl mx-auto bg-white p-8 rounded-lg shadow-lg">
-        <h1 class="text-4xl font-bold text-center text-indigo-700 mb-8">Our Books</h1>
 
-        {% if books %}
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {% for book in books %}
-                    <div class="bg-indigo-50 p-6 rounded-lg shadow-md border border-indigo-200">
-                        <a href="{% url 'book_detail' pk=book.pk %}" class="block text-indigo-800 hover:text-indigo-600 transition duration-200">
-                            <h2 class="text-2xl font-semibold mb-2">{{ book.title }}</h2>
-                        </a>
-                        <p class="text-lg text-gray-700 mb-1"><strong>Author:</strong> {{ book.author }}</p>
-                        <p class="text-xl font-bold text-green-700">Price: ${{ book.price }}</p>
-                        {% if book.description %}
-                            <p class="text-sm text-gray-600 mt-2 line-clamp-3">
-                                {{ book.description }}
-                            </p>
-                        {% else %}
-                            <p class="text-sm text-gray-500 mt-2">No description.</p>
-                        {% endif %}
-                        <p class="text-sm text-gray-600">Rating: {{ book.rate }}/5</p>
-                        <p class="text-sm text-gray-600">Views: {{ book.views }}</p>
-                        {% comment %} Display Categories {% endcomment %}
-                        {% if book.categories.all %}
-                            <p class="text-sm text-gray-600">
-                                <strong>Categories:</strong>
-                                {% for category in book.categories.all %}
-                                    <span class="inline-block bg-indigo-200 text-indigo-800 text-xs px-2 py-1 rounded-full mr-1">{{ category.name }}</span>
-                                {% endfor %}
-                            </p>
-                        {% endif %}
-                        {% comment %} Display ISBN Number {% endcomment %}
-                        {% if book.isbn_details %} {# Check if isbn_details object exists #}
-                            <p class="text-sm text-gray-600"><strong>ISBN:</strong> {{ book.isbn_details.isbn_number }}</p>
-                        {% else %}
-                            <p class="text-sm text-gray-500"><strong>ISBN:</strong> N/A</p>
-                        {% endif %}
-                    </div>
-                {% endfor %}
-            </div>
-        {% else %}
-            <p class="text-center text-gray-600 text-lg">No books available yet. Time to add some!</p>
-        {% endif %}
+{% block title %}All Books{% endblock %}
 
-        <div class="mt-10 text-center">
-            <a href="{% url 'book_create' %}" class="inline-block bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-6 rounded-lg transition duration-300 shadow-md">Add New Book</a>
+{% block content %}
+<div class="max-w-4xl mx-auto bg-white p-8 rounded-lg shadow-lg">
+    <h1 class="text-4xl font-bold text-center text-indigo-700 mb-8">Our Books</h1>
+
+    {% if messages %}
+        <ul class="messages list-none p-0 mb-4">
+            {% for message in messages %}
+                <li{% if message.tags %} class="p-3 mb-2 rounded-lg text-white {% if message.tags == 'success' %}bg-green-500{% elif message.tags == 'error' %}bg-red-500{% elif message.tags == 'warning' %}bg-yellow-500{% else %}bg-blue-500{% endif %}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    {% if books %}
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {% for book in books %}
+                <div class="bg-indigo-50 p-6 rounded-lg shadow-md border border-indigo-200">
+                    <a href="{% url 'book_detail' pk=book.pk %}" class="block text-indigo-800 hover:text-indigo-600 transition duration-200">
+                        <h2 class="text-2xl font-semibold mb-2">{{ book.title }}</h2>
+                    </a>
+                    <p class="text-lg text-gray-700 mb-1"><strong>Author:</strong> {{ book.author }}</p>
+                    <p class="text-xl font-bold text-green-700">Price: ${{ book.price }}</p>
+                    {% if book.description %}
+                        <p class="text-sm text-gray-600 mt-2 line-clamp-3">
+                            {{ book.description }}
+                        </p>
+                    {% else %}
+                        <p class="text-sm text-gray-500 mt-2">No description.</p>
+                    {% endif %}
+                    <p class="text-sm text-gray-600">Rating: {{ book.rate }}/5</p>
+                    <p class="text-sm text-gray-600">Views: {{ book.views }}</p>
+                    {% if book.categories.all %}
+                        <p class="text-sm text-gray-600">
+                            <strong>Categories:</strong>
+                            {% for category in book.categories.all %}
+                                <span class="inline-block bg-indigo-200 text-indigo-800 text-xs px-2 py-1 rounded-full mr-1">{{ category.name }}</span>
+                            {% endfor %}
+                        </p>
+                    {% endif %}
+                    {% if book.isbn_details %}
+                        <p class="text-sm text-gray-600"><strong>ISBN:</strong> {{ book.isbn_details.isbn_number }}</p>
+                    {% else %}
+                        <p class="text-sm text-gray-500"><strong>ISBN:</strong> N/A</p>
+                    {% endif %}
+                </div>
+            {% endfor %}
         </div>
+    {% else %}
+        <p class="text-center text-gray-600 text-lg">No books available yet. Time to add some!</p>
+    {% endif %}
+
+    <div class="mt-10 text-center">
+        <a href="{% url 'book_create' %}" class="inline-block bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-6 rounded-lg transition duration-300 shadow-md">Add New Book</a>
     </div>
-</body>
-</html>
-
-2.2: Update books/templates/books/book_detail.html
-This template needs to correctly display information about the associated User, Category (multiple), and ISBN details.
-
-<!-- books/templates/books/book_detail.html -->
-{% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ book.title }} - Book Details</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-    <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #f3f4f6;
-            color: #333;
-        }
-    </style>
-</head>
-<body class="p-6">
-    <div class="max-w-xl mx-auto bg-white p-8 rounded-lg shadow-lg border border-indigo-200">
-        <h1 class="text-3xl font-bold text-indigo-700 mb-4 text-center">Book Details</h1>
-        <div class="space-y-4">
-            <p class="text-xl text-gray-800"><strong>Title:</strong> {{ book.title }}</p>
-            <p class="text-xl text-gray-800"><strong>Author:</strong> {{ book.author }}</p>
-            <p class="text-xl text-gray-800"><strong>Price:</strong> ${{ book.price }}</p>
-            {% if book.description %}
-                <p class="text-lg text-gray-700 leading-relaxed">
-                    <strong>Description:</strong><br>{{ book.description|linebreaksbr }}
-                </p>
-            {% else %}
-                <p class="text-lg text-gray-500"><strong>Description:</strong> N/A</p>
-            {% endif %}
-            <p class="text-lg text-gray-700"><strong>Rating:</strong> {{ book.rate }}/5</p>
-            <p class="text-lg text-gray-700"><strong>Views:</strong> {{ book.views }}</p>
-            {% comment %} Display User who created the book {% endcomment %}
-            {% if book.user %}
-                <p class="text-lg text-gray-700"><strong>Created by:</strong> {{ book.user.username }}</p>
-            {% endif %}
-            {% comment %} Display Categories {% endcomment %}
-            {% if book.categories.all %}
-                <p class="text-lg text-gray-700">
-                    <strong>Categories:</strong>
-                    {% for category in book.categories.all %}
-                        <span class="inline-block bg-indigo-200 text-indigo-800 text-sm px-2 py-1 rounded-full mr-1">{{ category.name }}</span>
-                    {% endfor %}
-                </p>
-            {% endif %}
-            {% comment %} Display ISBN Number and details {% endcomment %}
-            {% if book.isbn_details %} {# Check if isbn_details object exists #}
-                <p class="text-lg text-gray-700"><strong>ISBN:</strong> {{ book.isbn_details.isbn_number }}</p>
-                <p class="text-md text-gray-600 ml-4">Author Title: {{ book.isbn_details.author_title }}</p>
-                <p class="text-md text-gray-600 ml-4">Book Title (ISBN): {{ book.isbn_details.book_title }}</p>
-            {% else %}
-                <p class="text-lg text-gray-500"><strong>ISBN:</strong> N/A</p>
-            {% endif %}
-        </div>
-
-        <div class="flex justify-between items-center mt-8">
-            <a href="{% url 'book_list' %}" class="text-indigo-600 hover:text-indigo-800 text-sm font-medium">Back to Book List</a>
-            <a href="{% url 'book_update' pk=book.pk %}" class="inline-block bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300 shadow-md">Edit Book</a>
-            
-            <form action="{% url 'book_delete' pk=book.pk %}" method="post" class="inline-block">
-                {% csrf_token %}
-                <button type="submit" class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300 shadow-md" onclick="return confirm('Are you sure you want to delete this book?');">
-                    Delete Book
-                </button>
-            </form>
-        </div>
-    </div>
-</body>
-</html>
+</div>
+{% endblock %}

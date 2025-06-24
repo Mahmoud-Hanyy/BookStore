@@ -1,0 +1,63 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Bookstore{% endblock %}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
+            color: #333;
+            min-height: 100vh; /* Ensure body takes full viewport height */
+            display: flex;
+            flex-direction: column;
+        }
+        main {
+            flex-grow: 1; /* Allows main content to fill available space */
+        }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen">
+    <nav class="bg-indigo-700 p-4 shadow-md">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <a href="{% url 'book_list' %}" class="text-white text-2xl font-bold rounded-lg hover:bg-indigo-600 px-3 py-1 transition duration-200">
+                Bookstore
+            </a>
+            <div class="flex items-center space-x-4">
+                {% if user.is_authenticated %}
+                    <span class="text-white text-lg">Welcome, <strong class="font-semibold">{{ user.username }}</strong>!</span>
+                    <form action="{% url 'logout' %}" method="post" class="inline">
+                        {% csrf_token %}
+                        <button type="submit" class="bg-indigo-500 hover:bg-indigo-400 text-white font-medium py-1.5 px-4 rounded-lg transition duration-200 shadow-sm">
+                            Logout
+                        </button>
+                    </form>
+                {% else %}
+                    <a href="{% url 'login' %}" class="bg-indigo-500 hover:bg-indigo-400 text-white font-medium py-1.5 px-4 rounded-lg transition duration-200 shadow-sm">
+                        Login
+                    </a>
+                    <a href="{% url 'signup' %}" class="bg-emerald-500 hover:bg-emerald-400 text-white font-medium py-1.5 px-4 rounded-lg transition duration-200 shadow-sm">
+                        Sign Up
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+
+    <main class="flex-grow p-6">
+        {% block content %}
+        {# This content will be replaced by child templates #}
+        {% endblock %}
+    </main>
+
+    <footer class="bg-gray-800 text-white text-center p-4 mt-auto">
+        <div class="max-w-7xl mx-auto">
+            &copy; {% now "Y" %} Bookstore Project. All rights reserved.
+        </div>
+    </footer>
+</body>
+</html>

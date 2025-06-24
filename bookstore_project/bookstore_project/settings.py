@@ -129,3 +129,15 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+LOGIN_REDIRECT_URL = 'book_list'  # Redirect to book_list URL name after successful login
+LOGIN_URL = 'login'               # The URL name for your login page (used by @login_required)
+LOGOUT_REDIRECT_URL = 'login'     # Redirect to login page after logout
+
+# URL behavior for consistent trailing slashes
+APPEND_SLASH = True
+
+# Explicitly define authentication backends
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+]
